@@ -1,0 +1,96 @@
+import tkinter as tk
+from tkinter import messagebox
+
+# Função para cadastrar um item
+def cadastrar_item():
+    nome = entry_nome.get()
+    marca = entry_marca.get()
+    preco = entry_preco.get()
+
+    if nome and marca and preco:
+        item = f"Nome: {nome}\nMarca: {marca}\nPreço: R${preco}\n"
+        itens_cadastrados.append(item)
+        atualizar_lista()
+        messagebox.showinfo("Sucesso", "Item cadastrado com sucesso!")
+        entry_nome.delete(0, tk.END)
+        entry_marca.delete(0, tk.END)
+        entry_preco.delete(0, tk.END)
+    else:
+        messagebox.showerror("Erro", "Por favor, preencha todos os campos!")
+
+# Função para atualizar a lista de itens cadastrados
+def atualizar_lista():
+    lista_itens.delete(0, tk.END)
+    pesquisa = entry_pesquisa.get()
+
+    for item in itens_cadastrados:
+        if pesquisa.lower() in item.lower():
+            lista_itens.insert(tk.END, item)
+
+# Criação da janela principal
+window = tk.Tk()
+window.title("Meninos da PUC")
+window.geometry("400x400")
+
+# Título e subtítulo
+label_titulo = tk.Label(window, text="Meninos da PUC", font=("Arial", 16, "bold"))
+label_titulo.pack(pady=10)
+
+label_subtitulo = tk.Label(window, text="Developed by Gabriel", font=("Arial", 12))
+label_subtitulo.pack(pady=5)
+
+# Frame para os campos de cadastro
+frame_cadastro = tk.Frame(window)
+frame_cadastro.pack(pady=10)
+
+# Campos de cadastro
+label_nome = tk.Label(frame_cadastro, text="Nome:")
+label_nome.grid(row=0, column=0, sticky="w")
+
+entry_nome = tk.Entry(frame_cadastro)
+entry_nome.grid(row=0, column=1)
+
+label_marca = tk.Label(frame_cadastro, text="Marca:")
+label_marca.grid(row=1, column=0, sticky="w")
+
+entry_marca = tk.Entry(frame_cadastro)
+entry_marca.grid(row=1, column=1)
+
+label_preco = tk.Label(frame_cadastro, text="Preço:")
+label_preco.grid(row=2, column=0, sticky="w")
+
+entry_preco = tk.Entry(frame_cadastro)
+entry_preco.grid(row=2, column=1)
+
+button_cadastrar = tk.Button(frame_cadastro, text="Cadastrar", command=cadastrar_item)
+button_cadastrar.grid(row=3, column=0, columnspan=2, pady=10)
+
+# Frame para pesquisa
+frame_pesquisa = tk.Frame(window)
+frame_pesquisa.pack(pady=10)
+
+label_pesquisa = tk.Label(frame_pesquisa, text="Pesquisar:")
+label_pesquisa.grid(row=0, column=0)
+
+entry_pesquisa = tk.Entry(frame_pesquisa)
+entry_pesquisa.grid(row=0, column=1)
+
+button_pesquisar = tk.Button(frame_pesquisa, text="Pesquisar", command=atualizar_lista)
+button_pesquisar.grid(row=0, column=2, padx=10)
+
+# Lista de itens cadastrados
+lista_itens = tk.Listbox(window, width=50)
+lista_itens.pack(pady=10)
+
+# Itens cadastrados iniciais
+itens_cadastrados = [
+    "Nome: Item 1\nMarca: Marca 1\nPreço: R$100\n",
+    "Nome: Item 2\nMarca: Marca 2\nPreço: R$200\n",
+    "Nome: Item 3\nMarca: Marca 3\nPreço: R$300\n",
+]
+
+# Preencher a lista com os itens cadastrados iniciais
+for item in itens_cadastrados:
+    lista_itens.insert(tk.END, item)
+
+window.mainloop()
